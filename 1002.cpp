@@ -8,7 +8,7 @@ using namespace std;
 map <string, int> mc;
 char realtion1[] = "2223334445556667", realtion2[] = "77888999";
 
-int trans (char x)
+inline int trans (char x)
 {
 	if (x < 'Q')
 		return realtion1[x - 'A'] - '0';
@@ -16,7 +16,7 @@ int trans (char x)
 		return realtion2[x - 'R'] - '0';
 }
 
-int deal (string x)
+inline int deal (string x)
 {
 	int ans = 0;
 	for (int i = 0; i < x.size(); i++)
@@ -30,6 +30,7 @@ int deal (string x)
 
 int main()
 {
+	ios::sync_with_stdio(false);
 	int n;
 	cin >> n;
 	for (int i = 1; i <= n; i++)
@@ -39,8 +40,16 @@ int main()
 		int to = deal(x);
 		// cout << to << endl;
 		char s[8]; sprintf(s, "%d", to); string sto = s;
-		if (!mc.count(sto)) mc[sto] = 1;
-		else mc[sto]++;
+		// mc[sto]++; This way may lead to TLE?
+		map <string, int>::iterator isappear = mc.find(sto);
+		if (isappear == mc.end())
+		{
+			mc.insert(map <string, int>::value_type(sto, 1));
+		}
+		else
+		{
+			mc[sto]++;
+		}
 	}
 	bool isOut = false;
 	for (map <string, int>::iterator iter = mc.begin(); iter != mc.end(); iter++)
