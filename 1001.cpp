@@ -40,7 +40,39 @@ int main()
 			savestring = mul(newstring, savestring);
 			// cout << savestring << endl;
 		}
-		
+		if (shouldlength >= savestring.size())
+		{
+			cout << ".";
+			for (int i = 1; i <= shouldlength - savestring.size(); i++)
+			{
+				cout << 0;
+			}
+			for (int i = savestring.size() - 1; i >= 0; i--)
+			{
+				if (savestring[i] == '0') // remove 0s from the back of savestring
+					savestring.erase(i, 1);
+				else break;
+			}
+			cout << savestring << endl;
+		}
+		else
+		{
+			string first = savestring.substr(0, savestring.size() - shouldlength);
+			string second = savestring.substr(savestring.size() - shouldlength);
+			cout << first;
+			for (int i = second.size() - 1; i >= 0; i--)
+			{
+				if (second[i] == '0') // remove 0s from the back of savestring
+					second.erase(i, 1);
+				else break;
+			}
+			if (!second.empty())
+			{
+				cout << ".";
+				cout << second << endl;
+			}
+			else cout << endl;
+		}
 	}
 	return 0;
 }
