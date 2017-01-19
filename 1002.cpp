@@ -3,6 +3,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <cstdio>
+#include <cassert>
 using namespace std;
 
 map <string, int> mc;
@@ -10,6 +11,8 @@ char realtion1[] = "2223334445556667", realtion2[] = "77888999";
 
 inline int trans (char x)
 {
+	//assert(x != 'Q');
+	//assert(x != 'Z');
 	if (x < 'Q')
 		return realtion1[x - 'A'] - '0';
 	else
@@ -39,8 +42,15 @@ int main()
 		cin >> x;
 		int to = deal(x);
 		// cout << to << endl;
-		char s[8]; sprintf(s, "%d", to); string sto = s;
-		// mc[sto]++; This way may lead to TLE?
+		char s[8];
+		sprintf(s, "%d", to);
+		string sto = s;
+		while (sto.size() < 7) // adding the leading '0'
+		{
+			sto = "0" + sto;
+		}
+		// mc[sto]++; //This way may lead to TLE?
+
 		map <string, int>::iterator isappear = mc.find(sto);
 		if (isappear == mc.end())
 		{
@@ -48,7 +58,8 @@ int main()
 		}
 		else
 		{
-			mc[sto]++;
+			// mc[sto]++;
+			isappear->second++;
 		}
 	}
 	bool isOut = false;
@@ -58,6 +69,8 @@ int main()
 		int x2 = iter->second;
 		if (x2 == 1) continue;
 		isOut = true;
+		// for (int i = 0; i < 7 - x1.size(); i++) cout << 0;
+
 		cout << x1[0] << x1[1] << x1[2] << "-";
 		cout << x1.substr(3) << " ";
 		cout << x2 << endl;
