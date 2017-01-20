@@ -1,6 +1,13 @@
+/*
+C++ AC Only (Visual C++ 6.0)
+TLE when in G++
+Maybe more optimization is needed.
+*/
+
 #include <iostream>
 #include <map>
 #include <cstring>
+#include <string>
 #include <cstdlib>
 #include <cstdio>
 #include <cassert>
@@ -9,17 +16,17 @@ using namespace std;
 map <string, int> mc;
 char realtion1[] = "2223334445556667", realtion2[] = "77888999";
 
-inline int trans (char x)
+inline char trans (char x)
 {
 	//assert(x != 'Q');
 	//assert(x != 'Z');
 	if (x < 'Q')
-		return realtion1[x - 'A'] - '0';
+		return realtion1[x - 'A'];
 	else
-		return realtion2[x - 'R'] - '0';
+		return realtion2[x - 'R'];
 }
 
-inline int deal (string x)
+/* inline int deal (string x)
 {
 	int ans = 0;
 	for (int i = 0; i < x.size(); i++)
@@ -29,6 +36,22 @@ inline int deal (string x)
 		else ans = ans * 10 + trans(x[i]);
 	}
 	return ans;
+} */
+
+char thisch[7];
+inline void deal (string &x)
+{
+	int pointer = 6;
+	for (int i = x.size() - 1; i >= 0; i--)
+	{
+		if (x[i] == '-') continue;
+		if (isdigit(x[i])) thisch[pointer--] = x[i];
+		else thisch[pointer--] = trans(x[i]);
+	}
+	for (int i = pointer; i >= 0; i--)
+	{
+		thisch[i] = 0;
+	}
 }
 
 int main()
@@ -40,18 +63,13 @@ int main()
 	{
 		string x;
 		cin >> x;
-		int to = deal(x);
+		deal(x);
 		// cout << to << endl;
-		char s[8];
-		sprintf(s, "%d", to);
-		string sto = s;
-		while (sto.size() < 7) // adding the leading '0'
-		{
-			sto = "0" + sto;
-		}
-		// mc[sto]++; //This way may lead to TLE?
+		string sto = thisch;
+		// cout << thisch << endl;
+		mc[sto]++; //This way may lead to TLE?
 
-		map <string, int>::iterator isappear = mc.find(sto);
+		/* map <string, int>::iterator isappear = mc.find(sto);
 		if (isappear == mc.end())
 		{
 			mc.insert(map <string, int>::value_type(sto, 1));
@@ -60,20 +78,20 @@ int main()
 		{
 			// mc[sto]++;
 			isappear->second++;
-		}
+		} */
 	}
 	bool isOut = false;
-	for (map <string, int>::iterator iter = mc.begin(); iter != mc.end(); iter++)
+	for (map <string, int>::iterator iter = mc.begin(); iter != mc.end(); ++iter)
 	{
-		string x1 = iter->first;
-		int x2 = iter->second;
-		if (x2 == 1) continue;
-		isOut = true;
-		// for (int i = 0; i < 7 - x1.size(); i++) cout << 0;
-
-		cout << x1[0] << x1[1] << x1[2] << "-";
-		cout << x1.substr(3) << " ";
-		cout << x2 << endl;
+		if (iter->second > 1)
+		{
+			string x1 = iter->first;
+			int x2 = iter->second;
+			isOut = true;
+			cout << x1[0] << x1[1] << x1[2] << "-";
+			cout << x1[3] << x1[4] << x1[5] << x1[6] << " ";
+			cout << x2 << endl;
+		}
 	}
 	if (!isOut) cout << "No duplicates." << endl;
 	return 0;
